@@ -10,7 +10,7 @@ public sealed class User :
     IExternalEntity, 
     IAuditableEntity
 {
-    private Password Password { get; set; }
+    public Password Password { get; private set; }
     
     /// <inheritdoc/>
     public string ExternalId { get; private set; }
@@ -18,7 +18,7 @@ public sealed class User :
     /// <summary>
     /// Идентификатор в сервисе Identity
     /// </summary>
-    public Guid IdentityToken { get; private set; }
+    public Guid Id { get; private set; }
     
     /// <summary>
     /// Имя пользователя
@@ -40,7 +40,7 @@ public sealed class User :
     private User(
         Password password,
         string externalId, 
-        Guid identityToken, 
+        Guid id, 
         string name,
         string createdBy,
         DateTimeOffset createdAt,
@@ -48,7 +48,7 @@ public sealed class User :
     {
         Password = password;
         ExternalId = externalId;
-        IdentityToken = identityToken;
+        Id = id;
         Name = name;
         CreatedBy = createdBy;
         CreatedAt = createdAt;
@@ -77,6 +77,4 @@ public sealed class User :
             createdAt,
             createdAt);
     }
-
-    private User() { }
 }

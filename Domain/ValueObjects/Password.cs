@@ -25,15 +25,7 @@ public sealed class Password : ValueObject
         Hash = hash;
         Salt = salt;
     }
-
-    public static Password CreateFromHash(string hash, string salt)
-    {
-        if (string.IsNullOrWhiteSpace(hash) || string.IsNullOrWhiteSpace(salt))
-            throw new ArgumentException("Hash and salt cannot be empty");
-
-        return new Password(hash, salt);
-    }
-
+    
     public bool Verify(string plainTextPassword)
     {
         var hashedInput = HashPassword(plainTextPassword, Salt);
