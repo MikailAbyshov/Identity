@@ -15,7 +15,7 @@ public static class ServiceCollectionExtension
   public static void AddDataAccessLayer(this IServiceCollection services, IConfiguration configuration)
   {
     services.AddDbContext<IIdentityContext, IdentityContext>(options => 
-      options.UseNpgsql("IdentityContext"));
+      options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
     
     services.AddTransient<IUserRepository, UserRepository>();
   }

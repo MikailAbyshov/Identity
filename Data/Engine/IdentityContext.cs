@@ -1,11 +1,11 @@
-using Domain.Entities;
+using Data.Records;
 using Microsoft.EntityFrameworkCore;
 
 namespace Data.Engine;
 
-internal sealed class IdentityContext : DbContext, IIdentityContext
+internal sealed class IdentityContext(DbContextOptions options) : DbContext(options), IIdentityContext
 {
-  public DbSet<User> Users { get; set; }
+  public DbSet<UserRecord> Users { get; set; }
 
   protected override void OnModelCreating(ModelBuilder modelBuilder)
   {

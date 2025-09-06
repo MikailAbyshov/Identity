@@ -19,8 +19,8 @@ public sealed class Password : ValueObject
         Salt = GenerateSalt();
         Hash = HashPassword(plainTextPassword, Salt);
     }
-
-    private Password(string hash, string salt)
+  
+    public Password(string hash, string salt)
     {
         Hash = hash;
         Salt = salt;

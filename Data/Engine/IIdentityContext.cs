@@ -1,4 +1,4 @@
-using Domain.Entities;
+using Data.Records;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 
@@ -12,7 +12,7 @@ public interface IIdentityContext
   /// <summary>
   /// Пользователи сервиса
   /// </summary>
-  DbSet<User> Users { get; set; }
+  DbSet<UserRecord> Users { get; set; }
   
   DbSet<TRecord> Set<TRecord>() where TRecord : class;
 
