@@ -1,0 +1,21 @@
+<Project>
+  <PropertyGroup>
+    <!--
+         Включение централизованного управления пакетами,
+         see https://docs.microsoft.com/en-us/nuget/consume-packages/central-package-management#enabling-central-package-management
+         -->
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    <!--
+          Включение возможности явного указания версий транзитивных зависимостей,
+          see https://docs.microsoft.com/en-us/nuget/consume-packages/central-package-management#transitive-pinning
+          -->
+    <CentralPackageTransitivePinningEnabled>false</CentralPackageTransitivePinningEnabled>
+    <!--
+          Явное включение возможности переопределять версии пакетов
+          see https://learn.microsoft.com/en-us/nuget/consume-packages/central-package-management#overriding-package-versions
+          -->
+    <CentralPackageVersionOverrideEnabled>true</CentralPackageVersionOverrideEnabled>
+  </PropertyGroup>
+  <ItemGroup>
+  </ItemGroup>
+</Project>
