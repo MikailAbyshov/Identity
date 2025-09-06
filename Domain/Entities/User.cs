@@ -39,8 +39,7 @@ public sealed class User :
     
     private User(
         Password password,
-        string externalId, 
-        Guid id, 
+        string externalId,
         string name,
         string createdBy,
         DateTimeOffset createdAt,
@@ -48,7 +47,7 @@ public sealed class User :
     {
         Password = password;
         ExternalId = externalId;
-        Id = id;
+        Id = Guid.NewGuid();
         Name = name;
         CreatedBy = createdBy;
         CreatedAt = createdAt;
@@ -66,12 +65,10 @@ public sealed class User :
         DateTimeOffset createdAt)
     {
         var identityPassword = new Password(password);
-        var identityToken = Guid.NewGuid();
 
         return new User(
             identityPassword,
             externalId,
-            identityToken,
             name,
             createdBy,
             createdAt,

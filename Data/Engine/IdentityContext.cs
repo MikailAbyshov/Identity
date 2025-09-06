@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Data.Engine;
 
-internal sealed class IdentityDbContext : DbContext, IIdentityContext
+internal sealed class IdentityContext : DbContext, IIdentityContext
 {
   public DbSet<User> Users { get; set; }
 

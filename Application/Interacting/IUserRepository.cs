@@ -1,4 +1,5 @@
 using Domain.Entities;
+using Domain.ValueObjects;
 
 namespace Application.Interacting;
 
@@ -10,5 +11,15 @@ public interface IUserRepository
   /// <summary>
   /// Получить пользователя по данным авторизации
   /// </summary>
-  public Task<User> GetByAuthData(string name, string password);
+  Task<User?> GetByAuthData(
+    string name,
+    Password password,
+    CancellationToken cancellationToken);
+
+  /// <summary>
+  /// Получить пользователя по данным авторизации
+  /// </summary>
+  Task Create(
+    User user,
+    CancellationToken cancellationToken);
 }
