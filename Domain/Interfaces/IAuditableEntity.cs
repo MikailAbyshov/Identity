@@ -3,7 +3,7 @@ namespace Domain.Interfaces;
 /// <summary>
 /// Сущность с аудитом
 /// </summary>
-public interface IAuditableEntity
+public interface IAuditableEntity : IEntity
 {
     /// <summary>
     /// Дата создания

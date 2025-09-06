@@ -3,7 +3,7 @@ namespace Domain.Interfaces;
 /// <summary>
 /// Сущности, создаваемые во внешних сервисах
 /// </summary>
-public interface IExternalEntity
+public interface IExternalEntity : IEntity
 {
     /// <summary>
     /// Идентификатор сущности из внешнего сервиса
