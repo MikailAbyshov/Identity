@@ -1,7 +1,7 @@
 using Application.Interacting;
 using Application.Operating;
 using Application.Utils;
-using Domain.ValueObjects;
+using Shared.Utils;
 
 namespace Application.Services.Users;
 
@@ -15,13 +15,16 @@ internal sealed class UserService : IUserService
   }
   
   public async Task<bool> Authorize(
-    string name,
-    string password,
+    string? name,
+    string? password,
     CancellationToken cancellationToken)
   {
-    var user = await userRepository.GetByAuthData(name, new Password(password), cancellationToken);
+    var authName = name.Required();
+    var authPassword = password.Required();
+    
+    var userPassword = await userRepository.GetByName(authName, cancellationToken);
 
-    return user is not null;
+    return userPassword is not null && userPassword.Verify(authPassword);
   }
 
   public async Task<Guid> Create(

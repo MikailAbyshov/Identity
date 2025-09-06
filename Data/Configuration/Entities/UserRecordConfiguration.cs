@@ -56,7 +56,7 @@ internal sealed class UserRecordConfiguration : IEntityTypeConfiguration<UserRec
       .HasMaxLength(byte.MaxValue)
       .IsRequired();
 
-    builder.HasIndex(u => new { u.Name, u.PasswordHash, u.PasswordSalt })
+    builder.HasIndex(u => new { u.Name })
       .HasFilter("deleted_at IS NULL");
   }
 }

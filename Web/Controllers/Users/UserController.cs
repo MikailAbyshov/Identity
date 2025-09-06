@@ -28,4 +28,22 @@ public sealed class BoxesController(IUserService userService) : ControllerBase
     
     return Ok(userDto.ExternalId);
   }
+  
+  /// <summary>
+  /// Авторизовать пользователя
+  /// </summary>
+  [HttpGet(Name = "Authorize")]
+  [ProducesResponseType<bool>(StatusCodes.Status200OK)]
+  [ProducesResponseType(StatusCodes.Status404NotFound)]
+  public async Task<IActionResult> Create(
+    [FromQuery] LoginRequest request, 
+    CancellationToken cancellationToken)
+  {
+    if (await userService.Authorize(request.Username, request.Password, cancellationToken))
+    {
+      return Ok();
+    }
+
+    return NotFound();
+  }
 }
