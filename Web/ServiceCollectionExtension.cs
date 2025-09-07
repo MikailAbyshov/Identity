@@ -34,24 +34,24 @@ public static class ServiceCollectionExtension
           ValidateIssuer = false,
           ValidateAudience = false,
           ValidateLifetime = true,
-          ValidateIssuerSigningKey = true, 
+          ValidateIssuerSigningKey = true,
           IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.SigningKey))
         };
-                
+
         options.Events = new JwtBearerEvents
         {
           OnMessageReceived = context =>
           {
             var accessToken = context.Request.Headers["Authorization"]
               .FirstOrDefault();
-                        
+
             if (accessToken is null)
             {
               return Task.CompletedTask;
             }
-                        
+
             accessToken = accessToken.Replace("Bearer ", "", StringComparison.OrdinalIgnoreCase);
-                        
+
             if (!string.IsNullOrEmpty(accessToken))
             {
               context.Token = accessToken;
@@ -64,7 +64,7 @@ public static class ServiceCollectionExtension
 
     services.AddAuthorization();
   }
-    
+
   /// <summary>
   /// Добавление Swagger с возможностью авторизации
   /// </summary>
@@ -73,7 +73,7 @@ public static class ServiceCollectionExtension
     services.AddSwaggerGen(options =>
     {
       options.SwaggerDoc("v1", new OpenApiInfo { Title = "Identity API" });
-        
+
       options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
       {
         Name = "Authorization",
