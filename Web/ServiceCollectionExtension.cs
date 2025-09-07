@@ -1,15 +1,19 @@
 using Application.Services.Tokens;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using System.Text;
 
 namespace Web;
 
 /// <summary>
-/// Добавление аутентификации в DI
+/// Добавление зависимостей в DI
 /// </summary>
 public static class ServiceCollectionExtension
 {
+  /// <summary>
+  /// Добавление механизма аутентификации
+  /// </summary>
   public static void AddApiAuthentification(
     this IServiceCollection services,
     IConfiguration configuration)
@@ -18,7 +22,7 @@ public static class ServiceCollectionExtension
 
     if (jwtOptions is null)
     {
-      throw new ArgumentNullException();
+      throw new ArgumentNullException(nameof(jwtOptions));
     }
 
     services
@@ -38,7 +42,20 @@ public static class ServiceCollectionExtension
         {
           OnMessageReceived = context =>
           {
-            context.Token = context.Request.Cookies["niceCookie"];
+            var accessToken = context.Request.Headers["Authorization"]
+              .FirstOrDefault();
+
+            if (accessToken is null)
+            {
+              return Task.CompletedTask;
+            }
+
+            accessToken = accessToken.Replace("Bearer ", "", StringComparison.OrdinalIgnoreCase);
+
+            if (!string.IsNullOrEmpty(accessToken))
+            {
+              context.Token = accessToken;
+            }
 
             return Task.CompletedTask;
           }
@@ -46,5 +63,41 @@ public static class ServiceCollectionExtension
       });
 
     services.AddAuthorization();
+  }
+
+  /// <summary>
+  /// Добавление Swagger с возможностью авторизации
+  /// </summary>
+  public static void AddSwaggerWithAuth(this IServiceCollection services)
+  {
+    services.AddSwaggerGen(options =>
+    {
+      options.SwaggerDoc("v1", new OpenApiInfo { Title = "Identity API" });
+
+      options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+      {
+        Name = "Authorization",
+        Type = SecuritySchemeType.Http,
+        BearerFormat = "JWT",
+        Scheme = "Bearer",
+        In = ParameterLocation.Header,
+        Description = "Enter JWT token in format: {your_token}"
+      });
+
+      options.AddSecurityRequirement(new OpenApiSecurityRequirement
+      {
+        {
+          new OpenApiSecurityScheme
+          {
+            Reference = new OpenApiReference
+            {
+              Type = ReferenceType.SecurityScheme,
+              Id = "Bearer"
+            }
+          },
+          Array.Empty<string>()
+        }
+      });
+    });
   }
 }

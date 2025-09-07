@@ -1,4 +1,5 @@
 using Application.Services.Tokens;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Web.Controllers.Clients;
@@ -14,13 +15,12 @@ public sealed class UserController(IJwtTokenProvider tokenProvider) : Controller
   /// Аутентифицировать потребителя сервиса
   /// </summary>
   [HttpPost(Name = "Login")]
+  [AllowAnonymous]
   [ProducesResponseType<string>(StatusCodes.Status200OK)]
   public IActionResult Login()
   {
     var token = tokenProvider.GenerateToken();
 
-    Response.Cookies.Append("niceCookie", token);
-
-    return Ok(token);
+    return Ok(new { access_token = token, token_type = "Bearer" });
   }
 }
