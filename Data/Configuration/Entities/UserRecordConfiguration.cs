@@ -9,25 +9,25 @@ internal sealed class UserRecordConfiguration : IEntityTypeConfiguration<UserRec
   public void Configure(EntityTypeBuilder<UserRecord> builder)
   {
     builder.HasKey(u => u.Id);
-      
+
     builder
       .Property(u => u.ExternalId)
       .HasMaxLength(byte.MaxValue)
       .IsRequired();
-      
+
     builder
       .Property(u => u.Id)
       .IsRequired();
-      
+
     builder
       .Property(u => u.Name)
       .HasMaxLength(byte.MaxValue)
       .IsRequired();
-      
+
     builder
       .Property(u => u.PasswordHash)
       .IsRequired();
-      
+
     builder
       .Property(u => u.CreatedAt)
       .IsRequired()
@@ -35,7 +35,7 @@ internal sealed class UserRecordConfiguration : IEntityTypeConfiguration<UserRec
         v => v.GetValueOrDefault().UtcDateTime,
         v => new DateTimeOffset(v, TimeSpan.Zero)
       );
-      
+
     builder
       .Property(u => u.UpdatedAt)
       .IsRequired()
@@ -43,7 +43,7 @@ internal sealed class UserRecordConfiguration : IEntityTypeConfiguration<UserRec
         v => v.GetValueOrDefault().UtcDateTime,
         v => new DateTimeOffset(v, TimeSpan.Zero)
       );
-    
+
     builder
       .Property(u => u.DeletedAt)
       .HasConversion(
@@ -56,7 +56,7 @@ internal sealed class UserRecordConfiguration : IEntityTypeConfiguration<UserRec
       .HasMaxLength(byte.MaxValue)
       .IsRequired();
 
-    builder.HasIndex(u => new { u.Name, u.PasswordHash, u.PasswordSalt })
+    builder.HasIndex(u => new { u.Name })
       .HasFilter("deleted_at IS NULL");
   }
 }

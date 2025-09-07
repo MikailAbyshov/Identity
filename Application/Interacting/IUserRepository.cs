@@ -11,9 +11,8 @@ public interface IUserRepository
   /// <summary>
   /// Получить пользователя по данным авторизации
   /// </summary>
-  Task<User?> GetByAuthData(
+  Task<Password?> GetByName(
     string name,
-    Password password,
     CancellationToken cancellationToken);
 
   /// <summary>

@@ -5,8 +5,8 @@ namespace Domain.Interfaces;
 /// </summary>
 public interface IExternalEntity : IEntity
 {
-    /// <summary>
-    /// Идентификатор сущности из внешнего сервиса
-    /// </summary>
-    string ExternalId { get; }
+  /// <summary>
+  /// Идентификатор сущности из внешнего сервиса
+  /// </summary>
+  string ExternalId { get; }
 }

@@ -13,5 +13,5 @@ internal static class UserConverter
       dto.Name,
       dto.CreatedBy,
       dto.CreatedAt);
-  } 
+  }
 }

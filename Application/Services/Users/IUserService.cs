@@ -1,5 +1,4 @@
 using Application.Operating;
-using Domain.Entities;
 
 namespace Application.Services.Users;
 
@@ -11,7 +10,7 @@ public interface IUserService
   /// <summary>
   /// Авторизовать пользователя
   /// </summary>
-  Task<bool> Authorize(string name, string password, CancellationToken cancellationToken);
+  Task<bool> Authorize(string? name, string? password, CancellationToken cancellationToken);
 
   /// <summary>
   /// Создать пользователя

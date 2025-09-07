@@ -6,37 +6,37 @@ namespace Domain.Entities;
 /// <summary>
 /// Пользователь сервиса
 /// </summary>
-public sealed class User : 
-  IExternalEntity, 
+public sealed class User :
+  IExternalEntity,
   IAuditableEntity
 {
   public Password Password { get; private set; }
-    
+
   /// <inheritdoc/>
   public string ExternalId { get; private set; }
-    
+
   /// <summary>
   /// Идентификатор в сервисе Identity
   /// </summary>
   public Guid Id { get; private set; }
-    
+
   /// <summary>
   /// Имя пользователя
   /// </summary>
   public string Name { get; private set; }
-    
+
   /// <inheritdoc/>
   public DateTimeOffset CreatedAt { get; private set; }
-    
+
   /// <inheritdoc/>
   public DateTimeOffset UpdatedAt { get; private set; }
-    
+
   /// <inheritdoc/>
   public DateTimeOffset? DeletedAt { get; private set; }
-    
+
   /// <inheritdoc/>
   public string CreatedBy { get; private set; }
-    
+
   private User(
     Guid id,
     Password password,
@@ -92,7 +92,7 @@ public sealed class User :
     DateTimeOffset? deletedAt)
   {
     var identityPassword = new Password(passwordHash, passwordSalt);
-      
+
     return new User(
       id,
       identityPassword,

@@ -13,10 +13,10 @@ public interface IIdentityContext
   /// Пользователи сервиса
   /// </summary>
   DbSet<UserRecord> Users { get; set; }
-  
+
   DbSet<TRecord> Set<TRecord>() where TRecord : class;
 
   Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
-  
+
   DatabaseFacade Database { get; }
 }

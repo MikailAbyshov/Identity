@@ -4,43 +4,46 @@ using Data.Utils;
 using Domain.Entities;
 using Domain.ValueObjects;
 using Microsoft.EntityFrameworkCore;
+using Shared.Utils;
 
 namespace Data.Repositories;
 
 internal sealed class UserRepository : IUserRepository
 {
   private readonly IIdentityContext context;
-  
+
   public UserRepository(IIdentityContext context)
   {
     this.context = context;
   }
-  
-  public async Task<User?> GetByAuthData(
-    string name, 
-    Password password,
+
+  public async Task<Password?> GetByName(
+    string name,
     CancellationToken cancellationToken)
   {
-    var record = await context.Users
-      .Where(u => u.DeletedAt == null)
-      .SingleOrDefaultAsync(u => 
-          u.Name == name 
-          && u.PasswordHash == password.Hash 
-          && u.PasswordSalt == password.Salt, 
+    var authName = name.Required();
+
+    var userRecord = await context.Users
+      .SingleOrDefaultAsync(u =>
+          u.Name == authName
+          && u.DeletedAt == null,
         cancellationToken);
 
-    if (record is null)
+    if (userRecord is not null)
     {
-      throw new KeyNotFoundException();
+      userRecord.PasswordHash.Required();
+      userRecord.PasswordSalt.Required();
+
+      return new Password(userRecord.PasswordHash, userRecord.PasswordSalt);
     }
-    
-    return record.ToUser();
+
+    return null;
   }
 
   public Task Create(User user, CancellationToken cancellationToken)
   {
     var record = user.ToRecord();
-    
+
     context.Users.AddAsync(record, cancellationToken);
 
     return context.SaveChangesAsync(cancellationToken);
