@@ -1,11 +1,15 @@
 using Application;
 using Application.Services.Cache;
+using Application.Services.Tokens;
 using Data;
+using Web;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDataAccessLayer(builder.Configuration);
 builder.Services.Configure<CacheOptions>(builder.Configuration.GetSection(CacheOptions.OptionsKey));
+builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection(JwtOptions.OptionsKey));
+builder.Services.AddApiAuthentification(builder.Configuration);
 builder.Services.AddServices();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddStackExchangeRedisCache(options
@@ -22,6 +26,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapControllers();
 

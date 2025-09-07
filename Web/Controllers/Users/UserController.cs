@@ -1,4 +1,5 @@
 using Application.Services.Users;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Web.Operating.Requests;
 using Web.Operating.Requests.Users;
@@ -9,8 +10,9 @@ namespace Web.Controllers.Users;
 /// Контроллер пользователей
 /// </summary>
 [ApiController]
-[Route("api/boxes")]
-public sealed class BoxesController(IUserService userService) : ControllerBase
+[Authorize]
+[Route("api/users")]
+public sealed class UserController(IUserService userService) : ControllerBase
 {
   /// <summary>
   /// Создать пользователя
