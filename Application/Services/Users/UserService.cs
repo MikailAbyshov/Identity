@@ -1,5 +1,6 @@
 using Application.Interacting;
 using Application.Operating;
+using Application.Services.Cache;
 using Application.Utils;
 using Shared.Utils;
 
@@ -8,10 +9,14 @@ namespace Application.Services.Users;
 internal sealed class UserService : IUserService
 {
   private readonly IUserRepository userRepository;
+  private readonly IUserCacheService userCacheService;
   
-  public UserService(IUserRepository userRepository)
+  public UserService(
+    IUserRepository userRepository,
+    IUserCacheService userCacheService)
   {
     this.userRepository = userRepository;
+    this.userCacheService = userCacheService;
   }
   
   public async Task<bool> Authorize(
@@ -21,10 +26,26 @@ internal sealed class UserService : IUserService
   {
     var authName = name.Required();
     var authPassword = password.Required();
+
+    var cachedValue = await userCacheService.Get(password, name, cancellationToken);
+
+    if (cachedValue is not null)
+    {
+      return cachedValue.Value;
+    }
     
     var userPassword = await userRepository.GetByName(authName, cancellationToken);
 
-    return userPassword is not null && userPassword.Verify(authPassword);
+    if (userPassword is not null && userPassword.Verify(authPassword))
+    {
+      await userCacheService.Set(
+        password,
+        name,
+        true,
+        cancellationToken);
+    }
+    
+    return false;
   }
 
   public async Task<Guid> Create(
