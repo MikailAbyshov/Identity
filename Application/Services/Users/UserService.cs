@@ -36,16 +36,18 @@ internal sealed class UserService : IUserService
     
     var userPassword = await userRepository.GetByName(authName, cancellationToken);
 
-    if (userPassword is not null && userPassword.Verify(authPassword))
+    if (userPassword is null || !userPassword.Verify(authPassword))
     {
-      await userCacheService.Set(
-        password,
-        name,
-        true,
-        cancellationToken);
+      return false;
     }
-    
-    return false;
+
+    await userCacheService.Set(
+      password,
+      name,
+      true,
+      cancellationToken);
+
+    return true;
   }
 
   public async Task<Guid> Create(
