@@ -10,7 +10,7 @@ internal sealed class UserService : IUserService
 {
   private readonly IUserRepository userRepository;
   private readonly IUserCacheService userCacheService;
-  
+
   public UserService(
     IUserRepository userRepository,
     IUserCacheService userCacheService)
@@ -18,7 +18,7 @@ internal sealed class UserService : IUserService
     this.userRepository = userRepository;
     this.userCacheService = userCacheService;
   }
-  
+
   public async Task<bool> Authorize(
     string? name,
     string? password,
@@ -33,7 +33,7 @@ internal sealed class UserService : IUserService
     {
       return cachedValue.Value;
     }
-    
+
     var userPassword = await userRepository.GetByName(authName, cancellationToken);
 
     if (userPassword is null || !userPassword.Verify(authPassword))
@@ -55,7 +55,7 @@ internal sealed class UserService : IUserService
     CancellationToken cancellationToken)
   {
     var user = userDto.ConvertToUser();
-    
+
     await userRepository.Create(user, cancellationToken);
 
     return user.Id;

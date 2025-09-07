@@ -8,7 +8,7 @@ namespace Application.Services.Cache;
 
 internal sealed class UserCacheService : IUserCacheService
 {
-  private static string BaseCacheKey = "EntityCache"; 
+  private static string BaseCacheKey = "EntityCache";
   private readonly IDistributedCache cache;
   private readonly TimeSpan defaultCachingDuration;
 
@@ -19,34 +19,34 @@ internal sealed class UserCacheService : IUserCacheService
     this.cache = cache;
     defaultCachingDuration = cacheOptions.Value.DefaultCacheDuration;
   }
-    
+
   public async Task<bool?> Get(
     string password,
     string name,
     CancellationToken cancellationToken)
   {
     var key = GetKey(password + name);
-    
+
     var cachedValue = await cache.GetStringAsync(key, cancellationToken);
-    
+
     if (cachedValue == null)
       return null;
-    
+
     if (bool.TryParse(cachedValue, out bool value))
       return value;
-    
+
     await cache.RemoveAsync(key, cancellationToken);
     return null;
   }
-  
+
   public Task Set(
     string password,
     string name,
-    bool value, 
+    bool value,
     CancellationToken cancellationToken)
   {
     var key = GetKey(password + name);
-      
+
     return cache.SetStringAsync(key,
       value.ToString(),
       new DistributedCacheEntryOptions
@@ -62,8 +62,8 @@ internal sealed class UserCacheService : IUserCacheService
     CancellationToken cancellationToken)
   {
     var key = GetKey(password + name);
-        
-    return cache.RemoveAsync(key, cancellationToken); 
+
+    return cache.RemoveAsync(key, cancellationToken);
   }
 
   private string GetKey(string entityKey)

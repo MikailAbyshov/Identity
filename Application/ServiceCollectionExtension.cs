@@ -3,7 +3,7 @@ using Application.Services.Users;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Application;
-  
+
 /// <summary>
 /// Добавление сервисов в DI
 /// </summary>

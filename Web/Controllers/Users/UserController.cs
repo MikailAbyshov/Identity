@@ -23,12 +23,12 @@ public sealed class BoxesController(IUserService userService) : ControllerBase
     CancellationToken cancellationToken)
   {
     var userDto = userRequest.ConvertToUserDto(DateTimeOffset.Now);
-    
+
     await userService.Create(userDto, cancellationToken);
-    
+
     return Ok(userDto.ExternalId);
   }
-  
+
   /// <summary>
   /// Авторизовать пользователя
   /// </summary>
@@ -36,7 +36,7 @@ public sealed class BoxesController(IUserService userService) : ControllerBase
   [ProducesResponseType<bool>(StatusCodes.Status200OK)]
   [ProducesResponseType(StatusCodes.Status404NotFound)]
   public async Task<IActionResult> Create(
-    [FromQuery] LoginRequest request, 
+    [FromQuery] LoginRequest request,
     CancellationToken cancellationToken)
   {
     if (await userService.Authorize(request.Username, request.Password, cancellationToken))

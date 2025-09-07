@@ -16,7 +16,7 @@ internal static class RecordConverter
     var createdBy = userRecord.CreatedBy.Required();
     var createdAt = userRecord.CreatedAt.Required();
     var updatedAt = userRecord.UpdatedAt.Required();
-    
+
     return User.Create(
       id,
       passwordHash,
