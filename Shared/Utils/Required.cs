@@ -3,6 +3,9 @@ using System.Runtime.CompilerServices;
 
 namespace Shared.Utils;
 
+/// <summary>
+/// Статический класс-помощник для нуллябельных типов
+/// </summary>
 public static class RequiredExtensions
 {
   /// <summary>
