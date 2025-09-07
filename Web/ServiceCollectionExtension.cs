@@ -20,7 +20,7 @@ public static class ServiceCollectionExtension
     {
       throw new ArgumentNullException();
     }
-    
+
     services
       .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
       .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
@@ -39,7 +39,7 @@ public static class ServiceCollectionExtension
           OnMessageReceived = context =>
           {
             context.Token = context.Request.Cookies["niceCookie"];
-            
+
             return Task.CompletedTask;
           }
         };

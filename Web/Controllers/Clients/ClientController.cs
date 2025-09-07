@@ -18,9 +18,9 @@ public sealed class UserController(IJwtTokenProvider tokenProvider) : Controller
   public IActionResult Login()
   {
     var token = tokenProvider.GenerateToken();
-   
+
     Response.Cookies.Append("niceCookie", token);
-    
+
     return Ok(token);
   }
 }
